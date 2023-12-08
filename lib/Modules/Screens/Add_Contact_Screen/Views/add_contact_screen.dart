@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:contact_diary_app_2/Modules/Screens/Add_Contact_Screen/Model/Contact_Model/contact_model.dart';
 import 'package:contact_diary_app_2/Modules/Screens/Add_Contact_Screen/Providers/Contact_Provider/contact_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Utils/Globals/globals.dart';
@@ -17,6 +19,9 @@ class Add_Contact_Screen extends StatefulWidget {
 class _Add_Contact_ScreenState extends State<Add_Contact_Screen> {
   @override
   Widget build(BuildContext context) {
+    //
+
+    //
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -37,7 +42,7 @@ class _Add_Contact_ScreenState extends State<Add_Contact_Screen> {
               Global.emailController.clear();
               Global.phoneController.clear();
 
-              Navigator.pushNamed(context, 'home');
+              Navigator.pushReplacementNamed(context, 'home');
             },
             icon: Icon(Icons.add),
           ),
@@ -68,8 +73,40 @@ class _Add_Contact_ScreenState extends State<Add_Contact_Screen> {
                 : StepState.indexed,
             isActive: (Global.currentIndex == 0) ? true : false,
             title: Text("Photo"),
-            content: CircleAvatar(
-              radius: 80,
+            content: Column(
+              children: [
+                CircleAvatar(
+                  radius: 80,
+                  foregroundImage: FileImage(File("${Global.imgPath}")),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        Contact.image = await Global.img_picker
+                            .pickImage(source: ImageSource.camera);
+                        setState(() {
+                          Global.imgPath = Contact.image!.path;
+                          log("${Global.imgPath}");
+                        });
+                      },
+                      icon: Icon(Icons.camera_alt_outlined),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        Contact.image = await Global.img_picker
+                            .pickImage(source: ImageSource.gallery);
+                        setState(() {
+                          Global.imgPath = Contact.image!.path;
+                          log("${Global.imgPath}");
+                        });
+                      },
+                      icon: Icon(Icons.image),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Step(
@@ -96,6 +133,7 @@ class _Add_Contact_ScreenState extends State<Add_Contact_Screen> {
             isActive: (Global.currentIndex == 2) ? true : false,
             title: Text("Phone"),
             content: TextFormField(
+              maxLength: 10,
               keyboardType: TextInputType.phone,
               controller: Global.phoneController,
               onChanged: (val) {

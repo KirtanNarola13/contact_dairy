@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:contact_diary_app_2/Modules/Screens/Add_Contact_Screen/Providers/Contact_Provider/contact_provider.dart';
 import 'package:contact_diary_app_2/Modules/Screens/Home_Screen/Providers/theme_provider.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../Utils/Globals/globals.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -82,7 +85,9 @@ class HomeScreen extends StatelessWidget {
                             Provider.of<ContactProvider>(context, listen: false)
                                 .allContact[i]);
                   },
-                  leading: const CircleAvatar(),
+                  leading: CircleAvatar(
+                    foregroundImage: FileImage(File("${Global.imgPath}")),
+                  ),
                   title: Text(
                       Provider.of<ContactProvider>(context, listen: false)
                           .allContact[i]

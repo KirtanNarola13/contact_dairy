@@ -1,6 +1,11 @@
 // ignore_for_file: must_be_immutable
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../Utils/Globals/globals.dart';
 import '../../Add_Contact_Screen/Model/Contact_Model/contact_model.dart';
 
 class Contact_Detail_Screen extends StatelessWidget {
@@ -22,67 +27,165 @@ class Contact_Detail_Screen extends StatelessWidget {
             const SizedBox(
               height: 90,
             ),
-            const CircleAvatar(
-              backgroundColor: Colors.deepPurple,
-              radius: 110,
-              child: CircleAvatar(
-                radius: 100,
+            CircleAvatar(
+              radius: 100,
+              foregroundImage: FileImage(File("${Global.imgPath}")),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              height: 80,
+              width: 350,
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                  border: Border.all(
+                    color: Colors.teal,
+                    width: 2,
+                  )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.name,
+                    style: TextStyle(fontSize: 22),
+                  ),
+                  Text(
+                    "+91 ${data.phone}",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
               ),
             ),
-            Text(
-              "${data.name}",
-              style: const TextStyle(fontSize: 25),
-            ),
-            Text(
-              "+91 ${data.phone}",
-              style: myStyle,
-            ),
-            Text(
-              "${data.email}",
-              style: const TextStyle(fontSize: 16),
-            ),
+
             // const Divider(),
             // const SizedBox(
             //   height: 20,
             // ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     FloatingActionButton(
-            //       backgroundColor: Colors.green.withOpacity(0.6),
-            //       onPressed: () {
-            //         launchUrl(Uri(scheme: "tel", path: "${data.phone}"));
-            //       },
-            //       child: Icon(Icons.call, color: iconColor),
-            //     ),
-            //     FloatingActionButton(
-            //       backgroundColor: Colors.blue.withOpacity(0.6),
-            //       onPressed: () {
-            //         launchUrl(Uri(scheme: "sms", path: "${data.phone}"));
-            //       },
-            //       child: Icon(Icons.message, color: iconColor),
-            //     ),
-            //     FloatingActionButton(
-            //       backgroundColor: Colors.red.withOpacity(0.6),
-            //       onPressed: () {
-            //         launchUrl(Uri(scheme: "mailto", path: "${data.email}"));
-            //       },
-            //       child: Icon(Icons.mail, color: iconColor),
-            //     ),
-            //     FloatingActionButton(
-            //       backgroundColor: Colors.yellow.withOpacity(0.6),
-            //       onPressed: () {
-            //         Share.share("${data.name}"
-            //             "+91 ${data.phone}"
-            //             "${data.email}");
-            //       },
-            //       child: Icon(Icons.share, color: iconColor),
-            //     ),
-            //   ],
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
+            const SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    launchUrl(Uri(scheme: "tel", path: "${data.phone}"));
+                  },
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.teal.shade100,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      border: Border.all(color: Colors.teal, width: 2),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call, color: iconColor),
+                          Text('CALL'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    launchUrl(Uri(scheme: "sms", path: "${data.phone}"));
+                  },
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.teal.shade100,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      border: Border.all(color: Colors.teal, width: 2),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.message, color: iconColor),
+                          Text('SHARE'),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    launchUrl(Uri(scheme: "mailto", path: "${data.email}"));
+                  },
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.teal.shade100,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      border: Border.all(color: Colors.teal, width: 2),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.mail, color: iconColor),
+                          Text('MAIL'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Share.share("${data.name}"
+                        "+91 ${data.phone}"
+                        "${data.email}");
+                  },
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.teal.shade100,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      border: Border.all(color: Colors.teal, width: 2),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.share, color: iconColor),
+                          Text('SHARE'),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
             // const Divider(),
           ],
         ),
